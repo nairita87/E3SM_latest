@@ -818,7 +818,7 @@ contains
          cell2 = cellsOnEdge(2,iEdge)
          do k = Nsurf, N
             layerThicknessEdge(k,iEdge) = 0.5_RKIND * (layerThickness(k,cell1) + layerThickness(k,cell2))
-         end do
+         !!end do
 
          ! average cell-based implicit bottom drag to edges and convert Mannings n to Cd
          if (config_use_implicit_bottom_roughness) then
@@ -829,7 +829,7 @@ contains
            ! averaging the two bottomDepth cells.
            implicitCd = max(0.0025_RKIND, &
                         min(0.1_RKIND, &
-                          0.16_RKIND/log(250.0_RKIND*(bottomDepth(cell1)+bottomDepth(cell2)))**2 ))
+                          0.16_RKIND/(log(25.0_RKIND*(layerThicknessEdge(k,iEdge))))**2 ))
          elseif (config_use_vegetation_drag .AND. config_use_vegetation_manning_equation) then
            implicitCd = gravity*(0.5_RKIND*(vegetationManning(cell1) + vegetationManning(cell2)))**2 * &
             (0.5_RKIND * (ssh(cell1) + ssh(cell2) + bottomDepth(cell1) + bottomDepth(cell2)))**(-1.0_RKIND/3.0_RKIND)
@@ -837,6 +837,7 @@ contains
            implicitCd = gravity*(0.5_RKIND*(bottomDrag(cell1) + bottomDrag(cell2)))**2 * &
             (0.5_RKIND * (ssh(cell1) + ssh(cell2) + bottomDepth(cell1) + bottomDepth(cell2)))**(-1.0_RKIND/3.0_RKIND)
          endif
+        enddo
 
          ! A is lower diagonal term
          A(1:Nsurf)=0.0_RKIND
