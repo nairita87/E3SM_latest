@@ -824,12 +824,11 @@ contains
          if (config_use_implicit_bottom_roughness) then
            ! NCOM's formula for bottom drag coefficient
            ! The original formula is cb(i,j) = max(cbmin, (vonk/log(0.5*depth(i,j)/z0))**2 ))
-           ! where vonk=0.16, z0=0.001, bracketed between [0.0025, 0.1]
-           ! The constant below is 250 = 0.5*0.5/z0 with the extra 0.5 from
-           ! averaging the two bottomDepth cells.
+           ! where vonk=0.16, z0=0.01, bracketed between [0.0025, 0.1]
+           ! The constant below is 50 = 0.5/z0 
            implicitCd = max(0.0025_RKIND, &
                         min(0.1_RKIND, &
-                          0.16_RKIND/(log(25.0_RKIND*(layerThicknessEdge(k,iEdge))))**2 ))
+                          0.16_RKIND/(log(50.0_RKIND*(layerThicknessEdge(k,iEdge))))**2 ))
          elseif (config_use_vegetation_drag .AND. config_use_vegetation_manning_equation) then
            implicitCd = gravity*(0.5_RKIND*(vegetationManning(cell1) + vegetationManning(cell2)))**2 * &
             (0.5_RKIND * (ssh(cell1) + ssh(cell2) + bottomDepth(cell1) + bottomDepth(cell2)))**(-1.0_RKIND/3.0_RKIND)
