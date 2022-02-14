@@ -876,8 +876,8 @@ contains
              end if
              if (isOcean) then
                 ! Enforce minimum depth
-                bottomDepth(iCell) = max(bottomDepthObserved(iCell), refBottomDepth(minimum_levels))
-
+                !bottomDepth(iCell) = max(bottomDepthObserved(iCell), refBottomDepth(minimum_levels))
+                bottomDepth(iCell) = max(bottomDepthObserved(iCell),config_global_ocean_minimum_depth)
                 maxLevelCell(iCell) = -1
                 do k = 1, nVertLevels
                    if (refBottomDepth(k) >= bottomDepth(iCell)) then
